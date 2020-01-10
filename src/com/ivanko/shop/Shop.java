@@ -17,6 +17,7 @@ public class Shop {
             add(new Cheese());
             add(new Chocolate());
             add(new cocaCola());
+            add(new Tomato());
         }};
         stock = new Stock(products);
 
