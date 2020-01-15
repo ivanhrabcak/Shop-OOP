@@ -10,23 +10,23 @@ public class Shop {
 
     public Shop() {
         List<Product> products = new ArrayList<>(){{
-            add(new Apple());
-            add(new Banana());
-            add(new Yogurt());
-            add(new Milk());
-            add(new Cheese());
-            add(new Chocolate());
-            add(new cocaCola());
-            add(new Tomato());
+            add(new Product(5, 1.10, 0, "Apple"));
+            add(new Product(5, 2.50, 1, "Banana"));
+            add(new Product(5, 1.15, 2, "Yogurt"));
+            add(new Product(5, 1.30, 3, "Milk"));
+            add(new Product(5, 1.40, 4, "Cheese"));
+            add(new Product(5, 1.20, 5, "Chocolate"));
+            add(new Product(5, 1.90, 6, "Coca Cola"));
+            add(new Product(5, 0.30, 7, "Tomato"));
         }};
         stock = new Stock(products);
 
     }
 
-    public double buyProduct(ProductType product, int quantity) {
+    public double buyProduct(String productName, int quantity) {
         double total = -1;
         for (Product p : stock.getProducts()) {
-            if (p.getProductType() == product) {
+            if (p.getName() == productName) {
                 total = stock.buyProduct(p, quantity);
             }
         }
