@@ -1,7 +1,5 @@
 package com.ivanko.shop;
 
-import com.ivanko.shop.products.NoneProduct;
-
 import java.util.List;
 
 public class Stock {
@@ -11,11 +9,12 @@ public class Stock {
         this.products = products;
     }
 
+
     public double buyProduct(Product product, int quantity) {
         double total = -1;
         for (Product p : products) {
-            if (p.getProductType() == product.getProductType()) {
-                total = p.buy(quantity);
+            if (p.getName() == product.getName()) { ;
+                p.setQuantity(p.getQuantity() - 1);
                 break;
             }
 
@@ -23,32 +22,32 @@ public class Stock {
         return total;
     }
 
-    private boolean isOnStock(Product product) {
+    public boolean isOnStock(String productName) {
         for (Product p : products) {
-            if (p.getProductType() == product.getProductType()) {
+            if (p.getName() == productName) {
                 return true;
             }
         }
         return false;
     }
 
-    public Product getProduct(Product product) {
-        if (!isOnStock(product)) {
-            return new NoneProduct();
+    public Product getProduct(String productName) {
+        if (!isOnStock(productName)) {
+            return null;
         }
         else {
             for (Product p : products) {
-                if (p.getProductType() == product.getProductType()) {
+                if (p.getName() == productName) {
                     return p;
                 }
             }
         }
-        return new NoneProduct();
+        return null;
     }
 
     public void addProduct(Product product) {
-        if (isOnStock(product)) {
-            getProduct(product).incrementQuantity(product.getQuantity());
+        if (isOnStock(product.getName())) {
+            getProduct(product.getName()).incrementQuantity(product.getQuantity());
         }
         else {
             products.add(product);
@@ -57,7 +56,7 @@ public class Stock {
     }
 
     public List<Product> getProducts() {
-        products.remove(new NoneProduct());
+        products.remove(null);
         return products;
     }
 
