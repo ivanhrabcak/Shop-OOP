@@ -5,28 +5,28 @@ import java.util.List;
 
 public class Shop {
     private Stock stock;
-    private Customer customer;
 
-    public Shop(Customer customer) {
-        this.customer = customer;
-        List<Product> products = new ArrayList<>(){{
-            add(new Product(5, 1.10, 0, "Apple"));
-            add(new Product(5, 2.50, 1, "Banana"));
-            add(new Product(5, 1.15, 2, "Yogurt"));
-            add(new Product(5, 1.30, 3, "Milk"));
-            add(new Product(5, 1.40, 4, "Cheese"));
-            add(new Product(5, 1.20, 5, "Chocolate"));
-            add(new Product(5, 1.90, 6, "Coca Cola"));
-            add(new Product(5, 0.30, 7, "Tomato"));
-        }};
+    public Shop(List<Product> products) {
         stock = new Stock(products);
 
     }
 
-    public double buyProduct(String productName, int quantity) {
+    public void doAction(Action action, Product product) {
+        if (action == Action.BUY) {
+            buy(product.getName());
+        }
+        else if (action == Action.ADD) {
+            getStock().addProduct(product);
+        }
+        else if (action == Action.REMOVE) {
+            getStock().removeProduct(product.getName());
+        }
+    }
+
+    public double buyProduct(String productName, int quantity) throws Exception {
         double total = -1;
         for (Product p : stock.getProducts()) {
-            if (p.getName() == productName) {
+            if (p.getName().equals(productName)) {
                 total = stock.buyProduct(p, quantity);
             }
         }
@@ -35,6 +35,10 @@ public class Shop {
 
     public Stock getStock() {
         return stock;
+    }
+
+    public List<Product> getProducts() {
+        return getStock().getProducts();
     }
 
     public void setStock(Stock stock) {

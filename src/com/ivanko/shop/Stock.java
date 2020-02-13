@@ -10,11 +10,25 @@ public class Stock {
     }
 
 
-    public double buyProduct(Product product, int quantity) {
+    public void removeProduct(String productName) {
+        for (int i = 0; i < products.size(); i++) {
+            Product product = products.get(i);
+            if (product.getName() == productName) {
+                products.remove(i);
+                return;
+            }
+        }
+    }
+
+    public double buyProduct(Product product, int quantity) throws Exception {
         double total = -1;
         for (Product p : products) {
-            if (p.getName() == product.getName()) { ;
+            if (p.getName().equals(product.getName())) {
+                if (quantity > product.getQuantity()) {
+                    throw new Exception();
+                }
                 p.setQuantity(p.getQuantity() - 1);
+                total = p.getPrice() * quantity;
                 break;
             }
 
