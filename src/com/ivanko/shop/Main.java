@@ -16,13 +16,16 @@ public class Main {
             add(new Product(5, 1.90, 6, "Coca Cola"));
             add(new Product(5, 0.30, 7, "Tomato"));
         }};
-        Shop s = new Shop(products);
+        Customer customer = new Customer(new Address("pupavova 4", "Bratislava",
+                                                     "Slovakia", 1234, 1),
+                                        "Name", 1);
+        Shop s = new Shop(products, customer);
         Menu m = new Menu(s);
         while (true) {
             m.print();
             Product product = m.getChoice();
             if (product == null) {
-                System.out.println("Invalid product.");
+                //System.out.println("Invalid product.");
                 continue;
             }
             Action action = m.getAction();
@@ -30,7 +33,7 @@ public class Main {
                 System.out.println("Invalid action.");
                 continue;
             }
-
+            s.doAction(action, product);
 
 
         }
