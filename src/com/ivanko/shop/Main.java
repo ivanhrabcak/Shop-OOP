@@ -23,7 +23,13 @@ public class Main {
         Menu m = new Menu(s);
         while (true) {
             m.print();
-            Product product = m.getChoice();
+            Product product = null;
+            try {
+                product = m.getChoice();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
             if (product == null) {
                 //System.out.println("Invalid product.");
                 continue;

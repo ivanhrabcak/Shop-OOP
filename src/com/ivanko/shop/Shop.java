@@ -25,16 +25,18 @@ public class Shop {
         }
         else if (action == Action.ADD_TO_SHOPPING_CART) {
             getCustomer().addToCart(product);
+            System.out.println("New total: " + customer.getShoppingCart().getPrice());
         }
     }
 
-    public double buyProduct(String productName, int quantity) throws Exception {
+    public double buyProduct(String productName, int quantity, Customer customer) {
         double total = -1;
         for (Product p : stock.getProducts()) {
             if (p.getName().equals(productName)) {
                 total = stock.buyProduct(p, quantity);
             }
         }
+        customer.subtractMoney(total);
         return total;
     }
 
@@ -66,8 +68,8 @@ public class Shop {
             List<Product> currentStock = stock.getProducts();
             for (Product p : currentStock) {
                 if (p.getName() == ProductName) {
+                    customer.subtractMoney(p.getPrice());
                     p.setQuantity(p.getQuantity() - 1);
-                    customer.addToCart(p);
                     break;
                 }
             }

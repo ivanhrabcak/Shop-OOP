@@ -20,12 +20,12 @@ public class Stock {
         }
     }
 
-    public double buyProduct(Product product, int quantity) throws Exception {
+    public double buyProduct(Product product, int quantity) {
         double total = -1;
         for (Product p : products) {
             if (p.getName().equals(product.getName())) {
                 if (quantity > product.getQuantity()) {
-                    throw new Exception();
+                    return -1;
                 }
                 p.setQuantity(p.getQuantity() - 1);
                 total = p.getPrice() * quantity;
