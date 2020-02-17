@@ -1,6 +1,7 @@
 package com.ivanko.shop;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
@@ -19,27 +20,40 @@ public class Main {
         Customer customer = new Customer(new Address("pupavova 4", "Bratislava",
                                                      "Slovakia", 1234, 1),
                                         "Name", 1);
-        Shop s = new Shop(products, customer);
-        Menu m = new Menu(s);
+        Shop shop = new Shop(products, customer);
+        Menu m = new Menu(shop);
         while (true) {
             m.print();
-            Product product = null;
+            float choice = -1;
             try {
-                product = m.getChoice();
+                choice = m.getChoice();
             }
             catch (Exception e) {
                 e.printStackTrace();
             }
-            if (product == null) {
-                //System.out.println("Invalid product.");
+
+            if (choice == -1) {
+                System.out.println("Invalid product.");
                 continue;
             }
+            else if (choice == 0.0) {
+                System.out.println(Arrays.deepToString(shop.getCustomer().getShoppingCart().getProductsString().toArray()));
+                m.showShoppingCartMenu(customer);
+                continue;
+            }
+            else if (choice == 0.5) {
+                System.out.println("Bought " + shop.getCustomer().getShoppingCartContent().size() + " items.");
+                shop.getCustomer().getShoppingCart().buyAll(shop);
+                continue;
+            }
+
             Action action = m.getAction();
             if (action == null) {
                 System.out.println("Invalid action.");
                 continue;
             }
-            s.doAction(action, product);
+            Product p = shop.getStock().getProducts().get((int) choice);
+            shop.doAction(action, p);
 
 
         }

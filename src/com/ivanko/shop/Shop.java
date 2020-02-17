@@ -29,10 +29,16 @@ public class Shop {
         }
     }
 
-    public double buyProduct(String productName, int quantity, Customer customer) {
+    public double buyProduct(String productName, int quantity, Customer customer) throws Exception {
         double total = -1;
         for (Product p : stock.getProducts()) {
             if (p.getName().equals(productName)) {
+                if (p.getQuantity() < quantity) {
+                    throw new Exception();
+                }
+                if (customer.getMoney() < p.getPrice()) {
+                    throw new Exception();
+                }
                 total = stock.buyProduct(p, quantity);
             }
         }
@@ -68,6 +74,10 @@ public class Shop {
             List<Product> currentStock = stock.getProducts();
             for (Product p : currentStock) {
                 if (p.getName() == ProductName) {
+                    if (customer.getMoney() < p.getPrice()) {
+                        System.out.println("You don't have enough money to buy this.");
+                        return;
+                    }
                     customer.subtractMoney(p.getPrice());
                     p.setQuantity(p.getQuantity() - 1);
                     break;
