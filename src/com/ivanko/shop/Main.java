@@ -17,11 +17,15 @@ public class Main {
             add(new Product(5, 1.90, 6, "Coca Cola"));
             add(new Product(5, 0.30, 7, "Tomato"));
         }};
+        String customerName = "Name";
         Customer customer = new Customer(new Address("pupavova 4", "Bratislava",
                                                      "Slovakia", 1234, 1),
-                                        "Name", 1);
-        Shop shop = new Shop(products, customer);
+                                        customerName, 1);
+        CustomerService customerService = new CustomerService(customer);
+
+        Shop shop = new Shop(products, customerService);
         Menu m = new Menu(shop);
+
         while (true) {
             m.print();
             float choice = -1;
@@ -37,13 +41,13 @@ public class Main {
                 continue;
             }
             else if (choice == 0.0) {
-                System.out.println(Arrays.deepToString(shop.getCustomer().getShoppingCart().getProductsString().toArray()));
+                System.out.println(Arrays.deepToString(customerService.getCustomerByName(customerName).getShoppingCart().getProductsString().toArray()));
                 m.showShoppingCartMenu(customer);
                 continue;
             }
             else if (choice == 0.5) {
-                System.out.println("Bought " + shop.getCustomer().getShoppingCartContent().size() + " items.");
-                shop.getCustomer().getShoppingCart().buyAll(shop);
+                System.out.println("Bought " + customerService.getCustomerByName(customerName).getShoppingCartContent().size() + " items.");
+                customerService.getCustomerByName(customerName).getShoppingCart().buyAll(shop);
                 continue;
             }
 
@@ -53,7 +57,7 @@ public class Main {
                 continue;
             }
             Product p = shop.getStock().getProducts().get((int) choice);
-            shop.doAction(action, p);
+            shop.doAction(action, p, customerName);
 
 
         }

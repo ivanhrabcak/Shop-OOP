@@ -5,17 +5,17 @@ import java.util.List;
 
 public class Shop {
     private Stock stock;
-    private Customer customer;
+    private CustomerService service;
 
-    public Shop(List<Product> products, Customer customer) {
+    public Shop(List<Product> products, CustomerService service) {
         stock = new Stock(products);
-        this.customer = customer;
+        this.service = service;
 
     }
 
-    public void doAction(Action action, Product product) {
+    public void doAction(Action action, Product product, String customerName) {
         if (action == Action.BUY) {
-            buy(product.getName(), customer);
+            buy(product.getName(), service.getCustomerByName(customerName));
         }
         else if (action == Action.ADD) {
             getStock().addProduct(product);
@@ -24,24 +24,14 @@ public class Shop {
             getStock().removeProduct(product.getName());
         }
         else if (action == Action.ADD_TO_SHOPPING_CART) {
-            getCustomer().addToCart(product);
-            System.out.println("New total: " + customer.getShoppingCart().getPrice());
+            service.getCustomerByName(customerName).addToCart(product);
+            System.out.println("New total: " + service.getCustomerByName(customerName).getShoppingCart().getPrice());
         }
     }
 
     public double buyProduct(String productName, int quantity, Customer customer) throws Exception {
         double total = -1;
-        for (Product p : stock.getProducts()) {
-            if (p.getName().equals(productName)) {
-                if (p.getQuantity() < quantity) {
-                    throw new Exception();
-                }
-                if (customer.getMoney() < p.getPrice()) {
-                    throw new Exception();
-                }
-                total = stock.buyProduct(p, quantity);
-            }
-        }
+        total = stock.buyProduct(stock.getProduct(productName), quantity); // !!!
         customer.subtractMoney(total);
         return total;
     }
@@ -50,12 +40,14 @@ public class Shop {
         return stock;
     }
 
-    public Customer getCustomer() {
-        return customer;
+
+    public CustomerService getCustomerService() {
+        return service;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+
+    public void setCustomerService(CustomerService service) {
+        this.service = service;
     }
 
     public List<Product> getProducts() {

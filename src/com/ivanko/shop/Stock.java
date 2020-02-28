@@ -1,6 +1,7 @@
 package com.ivanko.shop;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public class Stock {
     private List<Product> products;
@@ -20,6 +21,20 @@ public class Stock {
         }
     }
 
+    /*
+    public class Wtf implements Predicate<Product> {
+
+        private Product other;
+
+        public  Wtf(Product other) {this.other = other;}
+
+        @Override
+        public boolean test(Product product) {
+            return product.getName().equals(other.getName());
+        }
+    }
+     */
+
     public double buyProduct(Product product, int quantity) {
         double total = -1;
         for (Product p : products) {
@@ -33,6 +48,21 @@ public class Stock {
             }
 
         }
+
+//        Product productToBeBought = products.stream()
+//                .filter(new Wtf(product))
+//                .findFirst()
+//                .get();
+
+        Product productToBeBought = products.stream()
+                .filter(p -> {
+                    return p.getName().equals(product.getName());
+                })
+                .findFirst()
+                .get();
+
+        total = productToBeBought.getPrice() * quantity;
+
         return total;
     }
 
